@@ -1,5 +1,6 @@
 package br.com.anderson.composefirstlook.di
 
+import br.com.anderson.composefirstlook.BuildConfig
 import br.com.anderson.composefirstlook.data.remote.network.AuthInterceptor
 import dagger.Module
 import dagger.Provides
@@ -18,7 +19,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val API_KEY = "3d3dc9b067f0eb934f215ad3e0905a62"
+    private const val API_KEY = BuildConfig.API_KEY
     private const val BASE_URL = "http://api.openweathermap.org/"
 
     @Provides

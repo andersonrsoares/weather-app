@@ -1,6 +1,7 @@
 package br.com.anderson.composefirstlook.data.remote.network
 
 import br.com.anderson.composefirstlook.data.remote.dto.WeatherContentDto
+import retrofit2.Call
 
 import retrofit2.Response
 import retrofit2.http.GET

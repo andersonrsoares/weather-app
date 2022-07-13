@@ -3,7 +3,9 @@ package br.com.anderson.composefirstlook.data.remote.datasource
 
 import kotlinx.coroutines.TimeoutCancellationException
 import org.json.JSONObject
+import retrofit2.Call
 import retrofit2.Response
+import retrofit2.awaitResponse
 import java.io.IOException
 import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException

@@ -23,24 +23,25 @@ import androidx.navigation.NavHostController
 import br.com.anderson.composefirstlook.R;
 import br.com.anderson.composefirstlook.presentation.UiState
 import br.com.anderson.composefirstlook.presentation.navigation.NavigationScreen
+import br.com.anderson.composefirstlook.presentation.navigation.NavigationViewModel
 import br.com.anderson.composefirstlook.ui.theme.*
 import kotlinx.coroutines.flow.*
 
 
 @Composable
-fun WeatherSearchDestination(navController: NavHostController) {
+fun WeatherSearchDestination(navigationViewModel: NavigationViewModel = hiltViewModel()) {
     val scaffoldState: ScaffoldState = rememberScaffoldState()
 
     Scaffold(
         scaffoldState = scaffoldState
     ) {
-        WeatherSearchScreen(navController)
+        WeatherSearchScreen(navigationViewModel)
     }
 }
 
 @Composable
 private fun WeatherSearchScreen(
-    navController: NavHostController
+    navigationViewModel: NavigationViewModel = hiltViewModel()
 ) {
     Box(
         Modifier
@@ -60,14 +61,14 @@ private fun WeatherSearchScreen(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ){
-            WeatherSearchScreenBody(navController)
+            WeatherSearchScreenBody(navigationViewModel)
         }
     }
 }
 
 @Composable
 private fun WeatherSearchScreenBody(
-    navController: NavHostController
+    navigationViewModel: NavigationViewModel = hiltViewModel()
 ) {
     val viewModel:WeatherSearchViewModel = hiltViewModel()
     val validateSearchInput:Flow<UiState<String>> = viewModel.validateSearchInput.receiveAsFlow()
@@ -75,7 +76,7 @@ private fun WeatherSearchScreenBody(
     LaunchedEffect(validateSearchInput) {
         validateSearchInput.onEach  {
             if (it is UiState.Success) {
-                 navController.navigate("${NavigationScreen.WeatherDetail.route}/${it.data}")
+                navigationViewModel.push(NavigationScreen.WeatherDetail, NavigationScreen.WeatherDetail.args(it.data))
             }
         }.collect()
     }
@@ -90,7 +91,7 @@ private fun WeatherSearchScreenBody(
         Spacer(modifier = Modifier
             .height(20.dp))
         HistoryButton {
-            navController.navigate(NavigationScreen.WeatherHistory.route)
+            navigationViewModel.push(NavigationScreen.WeatherHistory)
         }
     }
 }

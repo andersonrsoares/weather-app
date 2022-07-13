@@ -42,7 +42,7 @@ fun WeatherDetailScreen(navController: NavHostController,
     val viewModel:WeatherDetailViewModel = hiltViewModel()
     // Listen for side effects from the VM
 
-    val weatherState by viewModel.fetchWeatherFlow.collectAsState(initial = UiState.Loading())
+    val weatherState by viewModel.fetchWeatherFlow.collectAsState(initial = UiStateWeatherDetails.Loading)
 
     LaunchedEffect(true) {
         viewModel.onWeatherSearchClick(cityName.orEmpty())
@@ -65,7 +65,7 @@ fun CityWeatherHistoryDestination(navController: NavHostController) {
     val viewModel:WeatherDetailViewModel = hiltViewModel()
     // Listen for side effects from the VM
 
-    val weatherState by viewModel.fetchWeatherFlow.collectAsState(initial = UiState.Loading())
+    val weatherState by viewModel.fetchWeatherFlow.collectAsState(initial = UiStateWeatherDetails.Loading)
 
     LaunchedEffect(true) {
         viewModel.getCityWeatherHistory()
@@ -84,7 +84,7 @@ fun CityWeatherHistoryDestination(navController: NavHostController) {
 @Composable
 fun WeatherDetailBody(
     navController: NavHostController,
-    weatherState: UiState<List<CityWeather>>
+    weatherState: UiStateWeatherDetails
 ) {
     Box(
         Modifier
@@ -123,12 +123,12 @@ fun WeatherDetailBody(
 
             Box(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 5.dp)) {
                 when(weatherState) {
-                    is UiState.Loading -> LoadingBar()
-                    is UiState.Success -> {
-                        WeatherList(weatherItems = weatherState.data.orEmpty())
+                    is UiStateWeatherDetails.Loading -> LoadingBar()
+                    is UiStateWeatherDetails.Success -> {
+                        WeatherList(weatherItems = weatherState.data)
                     }
-                    is UiState.Failure -> ShowErrorMessage(weatherState.error)
-                    is UiState.Empty -> ShowMessage(weatherState.message)
+                    is UiStateWeatherDetails.Failure -> ShowErrorMessage(weatherState.error)
+                    is UiStateWeatherDetails.Empty -> ShowMessage(weatherState.message)
                 }
             }
         }
